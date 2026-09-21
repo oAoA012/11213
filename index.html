@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>墨卡 · 个人主页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Noto+Serif+SC:wght@400;600;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: { extend: {
+    fontFamily: {
+      sans: ['"Inter Variable"','Inter','system-ui','-apple-system','Segoe UI','PingFang SC','Microsoft YaHei','sans-serif'],
+      serif: ['"Fraunces"','Noto Serif SC','Songti SC','Georgia','SimSun','serif'],
+      mono: ['"JetBrains Mono"','ui-monospace','SF Mono','Menlo','Consolas','monospace'],
+    },
+    colors: {
+      paper: {50:'#F8F6F1',100:'#F1ECDC',200:'#E7DEC6',300:'#D6C7A2',400:'#BEA673'},
+      ink: {800:'#2A2B2E',900:'#181A1D',950:'#0C0D0F'},
+      slatewash: {200:'#D6DEDC',400:'#8A9B99',600:'#4F6260'},
+      ochre: {50:'#FBF1E2',100:'#F4DDB7',200:'#E7C181',400:'#C98A3C',500:'#B27127',600:'#915919'},
+      sea: {400:'#6FA2A0',500:'#4F807F',600:'#386260'},
+      moss: {400:'#8AA878',500:'#69885A'},
+      'star-red': '#D64545','star-yellow':'#D4A017','star-blue':'#3B7DD8',
+    },
+    boxShadow: {
+      'ink-1':'0 1px 2px rgba(24,26,29,0.06),0 8px 24px -10px rgba(24,26,29,0.12)',
+      'ink-2':'0 4px 10px -2px rgba(24,26,29,0.10),0 30px 60px -20px rgba(24,26,29,0.22)',
+      'ink-card':'0 2px 0 rgba(24,26,29,0.04),0 1px 2px rgba(24,26,29,0.06)',
+    },
+    keyframes: {
+      'fade-in':{'0%':{opacity:'0',transform:'translateY(12px)'},'100%':{opacity:'1',transform:'translateY(0)'}},
+      'rise':{'0%':{opacity:'0',transform:'translateY(24px)'},'100%':{opacity:'1',transform:'translateY(0)'}},
+      'float':{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-10px)'}},
+    },
+    animation: {'fade-in':'fade-in .5s ease-out both','rise':'rise .7s cubic-bezier(.22,.9,.3,1) both','float':'float 6s ease-in-out infinite'},
+  }},
+};
+</script>
+<style>
+:root{color-scheme:light dark}
+body{font-family:'Inter','Noto Serif SC',system-ui,sans-serif;background:#F8F6F1;color:#2A2B2E;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.dark body{background:#0C0D0F;color:#E8E4D7}
+body::before{content:'';position:fixed;inset:0;z-index:-2;
+  background-image:
+    radial-gradient(900px 560px at 12% -10%,rgba(201,138,60,0.12),transparent 60%),
+    radial-gradient(800px 500px at 100% 8%,rgba(111,162,160,0.09),transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16  0 0 0 0 0.16  0 0 0 0 0.18  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size:auto,auto,160px 160px;background-repeat:no-repeat,no-repeat,repeat;
+}
+.dark body::before{
+  background-image:
+    radial-gradient(900px 560px at 12% -10%,rgba(201,138,60,0.10),transparent 60%),
+    radial-gradient(800px 500px at 100% 8%,rgba(111,162,160,0.07),transparent 60%),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.ink-drop{width:10px;height:10px;border-radius:999px;background:radial-gradient(circle at 35% 30%,#E7C181,#C98A3C 55%,#915919);box-shadow:0 4px 14px rgba(201,138,60,0.4);display:inline-block}
+.hairline{background:linear-gradient(90deg,transparent,rgba(42,43,46,0.18),transparent);height:1px}
+.dark .hairline{background:linear-gradient(90deg,transparent,rgba(248,246,241,0.18),transparent)}
+.glass{background:rgba(255,255,255,0.55);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.5)}
+.dark .glass{background:rgba(12,13,15,0.6);border-color:rgba(255,255,255,0.08)}
+.reveal{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.22,.9,.3,1)}
+.reveal.show{opacity:1;transform:none}
+/* 墨卡标签色 */
+.tag-work{background:rgba(111,162,160,0.15);color:#386260}
+.tag-life{background:rgba(201,138,60,0.14);color:#915919}
+.tag-inspire{background:rgba(105,136,90,0.16);color:#546E45}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<!-- 导航 -->
+<nav id="nav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <div class="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2 group">
+      <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-ink-900 text-ochre-400 shadow-ink-card dark:bg-ochre-400 dark:text-ink-900 transition group-hover:scale-105">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </div>
+      <span class="font-serif text-lg font-semibold text-ink-900 dark:text-paper-50">墨卡</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-slatewash-600 dark:text-slatewash-400">
+      <a href="#features" class="hover:text-ochre-500 transition">功能</a>
+      <a href="#showcase" class="hover:text-ochre-500 transition">预览</a>
+      <a href="#about" class="hover:text-ochre-500 transition">关于</a>
+      <a href="#contact" class="hover:text-ochre-500 transition">联系</a>
+    </div>
+    <button id="darkBtn" class="rounded-xl p-2 text-slatewash-600 hover:bg-paper-100 dark:text-slatewash-400 dark:hover:bg-white/5 transition" title="切换主题">
+      <svg id="darkIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="top" class="relative min-h-screen flex items-center pt-24">
+  <div class="mx-auto max-w-6xl px-6 w-full">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="animate-rise">
+        <div class="inline-flex items-center gap-2 rounded-full border border-ochre-200/60 bg-ochre-50/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em] text-ochre-600 dark:border-ochre-400/20 dark:bg-ochre-400/10 dark:text-ochre-200 mb-6">
+          <span class="ink-drop"></span> Mémorand · Ink
+        </div>
+        <h1 class="font-serif text-5xl md:text-6xl font-bold leading-[1.1] text-ink-900 dark:text-paper-50">
+          一张纸、一支笔，<br>
+          记<span class="text-ochre-500">值得留下</span>的事
+        </h1>
+        <p class="mt-6 text-lg text-slatewash-600 dark:text-slatewash-400 max-w-lg leading-relaxed">
+          墨卡是一款具有墨水美学的个人备忘录应用。支持多账号数据隔离、可折叠标签树、红/黄/蓝三色星标，让每一张卡片都有它的位置。
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#showcase" class="inline-flex items-center gap-2 rounded-2xl bg-ink-900 px-6 py-3 text-sm font-medium text-paper-50 shadow-ink-1 hover:-translate-y-0.5 transition dark:bg-ochre-500 dark:text-ink-900 dark:hover:bg-ochre-400">
+            查看预览
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#features" class="inline-flex items-center gap-2 rounded-2xl border border-paper-300 bg-white/60 px-6 py-3 text-sm font-medium text-ink-900 hover:border-ochre-400 transition dark:border-white/10 dark:bg-white/[0.04] dark:text-paper-50 dark:hover:border-ochre-400/60">
+            了解功能
+          </a>
+        </div>
+        <div class="mt-10 flex gap-8 text-sm">
+          <div><div class="font-serif text-2xl font-bold text-ochre-500">2</div><div class="text-slatewash-400 text-xs mt-1">演示账号</div></div>
+          <div><div class="font-serif text-2xl font-bold text-ochre-500">3</div><div class="text-slatewash-400 text-xs mt-1">标签分类</div></div>
+          <div><div class="font-serif text-2xl font-bold text-ochre-500">3</div><div class="text-slatewash-400 text-xs mt-1">星标颜色</div></div>
+          <div><div class="font-serif text-2xl font-bold text-ochre-500">∞</div><div class="text-slatewash-400 text-xs mt-1">本地存储</div></div>
+        </div>
+      </div>
+      <!-- Hero 卡片预览 -->
+      <div class="relative animate-fade-in">
+        <div class="absolute -inset-4 rounded-[28px] bg-gradient-to-br from-ochre-400/20 to-sea-500/10 blur-2xl"></div>
+        <div class="relative rounded-3xl border border-paper-200 bg-white/70 p-5 shadow-ink-2 dark:border-white/10 dark:bg-white/[0.04]">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="flex gap-1.5"><span class="w-3 h-3 rounded-full bg-red-400/70"></span><span class="w-3 h-3 rounded-full bg-yellow-400/70"></span><span class="w-3 h-3 rounded-full bg-green-400/70"></span></div>
+            <span class="ml-2 font-mono text-xs text-slatewash-400">memo-app</span>
+          </div>
+          <div class="grid grid-cols-[1fr_1.6fr] gap-3">
+            <div class="rounded-2xl bg-ink-900 p-3 text-paper-50 dark:bg-gradient-to-br dark:from-ink-900 dark:to-ink-950">
+              <div class="font-serif text-base font-semibold">墨卡</div>
+              <div class="font-mono text-[9px] text-ochre-200/80 mt-0.5">Mémorand</div>
+              <div class="mt-3 space-y-1">
+                <div class="rounded-lg bg-ochre-400/15 px-2 py-1.5 text-[11px] flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ochre-400"></span>全部卡片</div>
+                <div class="rounded-lg px-2 py-1.5 text-[11px] text-slatewash-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sea-500"></span>工作</div>
+                <div class="rounded-lg px-2 py-1.5 text-[11px] text-slatewash-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ochre-400"></span>生活</div>
+                <div class="rounded-lg px-2 py-1.5 text-[11px] text-slatewash-400 flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-moss-500"></span>灵感</div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-sea-500"></span>
+                  <span class="font-serif text-sm font-semibold flex-1">项目周报</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-star-yellow"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">本周完成了星标功能的开发…</div>
+                <div class="text-[10px] text-slatewash-400/70 mt-1">9/21 · 14:30</div>
+              </div>
+              <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-ochre-400"></span>
+                  <span class="font-serif text-sm font-semibold flex-1">读书笔记</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-star-blue"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">《深度工作》核心观点摘录…</div>
+                <div class="text-[10px] text-slatewash-400/70 mt-1">9/20 · 21:15</div>
+              </div>
+              <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-moss-500"></span>
+                  <span class="font-serif text-sm font-semibold flex-1">周末灵感</span>
+                </div>
+                <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">做一个会呼吸的便签纸…</div>
+                <div class="text-[10px] text-slatewash-400/70 mt-1">9/19 · 10:02</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-24 relative">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="text-center mb-16 reveal">
+      <div class="inline-flex items-center gap-2 rounded-full border border-ochre-200/60 bg-ochre-50/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em] text-ochre-600 dark:border-ochre-400/20 dark:bg-ochre-400/10 dark:text-ochre-200 mb-4">
+        Features · 核心功能
+      </div>
+      <h2 class="font-serif text-4xl font-bold text-ink-900 dark:text-paper-50">为思考而生的四个特性</h2>
+      <p class="mt-3 text-slatewash-600 dark:text-slatewash-400">不堆砌功能，只保留记录所需的最小优雅</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Feature 1 -->
+      <div class="reveal group rounded-3xl border border-paper-200 bg-white/60 p-8 shadow-ink-card transition hover:-translate-y-1 hover:shadow-ink-1 dark:border-white/10 dark:bg-white/[0.03]">
+        <div class="flex items-start gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-ochre-400/15 text-ochre-500">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div>
+            <h3 class="font-serif text-xl font-semibold text-ink-900 dark:text-paper-50">可折叠标签树</h3>
+            <p class="mt-2 text-sm text-slatewash-600 dark:text-slatewash-400 leading-relaxed">"全部卡片"与"工作 / 生活 / 灵感"各自独立折叠展开，让卡片库像文件夹一样整洁有序。</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="tag-work rounded-lg px-2.5 py-1 text-xs">工作</span>
+              <span class="tag-life rounded-lg px-2.5 py-1 text-xs">生活</span>
+              <span class="tag-inspire rounded-lg px-2.5 py-1 text-xs">灵感</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Feature 2 -->
+      <div class="reveal group rounded-3xl border border-paper-200 bg-white/60 p-8 shadow-ink-card transition hover:-translate-y-1 hover:shadow-ink-1 dark:border-white/10 dark:bg-white/[0.03]">
+        <div class="flex items-start gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-star-yellow/15 text-star-yellow">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div>
+            <h3 class="font-serif text-xl font-semibold text-ink-900 dark:text-paper-50">三色星标系统</h3>
+            <p class="mt-2 text-sm text-slatewash-600 dark:text-slatewash-400 leading-relaxed">为每张卡片标记紧急程度：<span class="text-star-red font-medium">红</span> = 紧急、<span class="text-star-yellow font-medium">黄</span> = 重要、<span class="text-star-blue font-medium">蓝</span> = 待办，一目了然。</p>
+            <div class="mt-4 flex gap-3">
+              <span class="flex items-center gap-1.5 text-xs"><span class="w-4 h-4 rounded-full bg-star-red"></span>紧急</span>
+              <span class="flex items-center gap-1.5 text-xs"><span class="w-4 h-4 rounded-full bg-star-yellow"></span>重要</span>
+              <span class="flex items-center gap-1.5 text-xs"><span class="w-4 h-4 rounded-full bg-star-blue"></span>待办</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Feature 3 -->
+      <div class="reveal group rounded-3xl border border-paper-200 bg-white/60 p-8 shadow-ink-card transition hover:-translate-y-1 hover:shadow-ink-1 dark:border-white/10 dark:bg-white/[0.03]">
+        <div class="flex items-start gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-sea-500/15 text-sea-600 dark:text-sea-400">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <h3 class="font-serif text-xl font-semibold text-ink-900 dark:text-paper-50">多账号数据隔离</h3>
+            <p class="mt-2 text-sm text-slatewash-600 dark:text-slatewash-400 leading-relaxed">基于用户名命名空间的 localStorage 隔离，不同账号的卡片、标签、星标互不干扰，私密且安全。</p>
+            <div class="mt-4 font-mono text-xs text-slatewash-400">memo-notes-v1:备忘录demo</div>
+          </div>
+        </div>
+      </div>
+      <!-- Feature 4 -->
+      <div class="reveal group rounded-3xl border border-paper-200 bg-white/60 p-8 shadow-ink-card transition hover:-translate-y-1 hover:shadow-ink-1 dark:border-white/10 dark:bg-white/[0.03]">
+        <div class="flex items-start gap-4">
+          <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-ink-900 text-ochre-400 dark:bg-ochre-400 dark:text-ink-900">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </div>
+          <div>
+            <h3 class="font-serif text-xl font-semibold text-ink-900 dark:text-paper-50">纸白 / 墨夜双主题</h3>
+            <p class="mt-2 text-sm text-slatewash-600 dark:text-slatewash-400 leading-relaxed">日间纸白温润，夜间墨夜沉静。主题状态自动持久化，跟随你的使用习惯。</p>
+            <div class="mt-4 flex gap-2">
+              <span class="rounded-lg border border-paper-300 bg-paper-50 px-3 py-1 text-xs">纸白</span>
+              <span class="rounded-lg border border-white/10 bg-ink-900 text-paper-50 px-3 py-1 text-xs">墨夜</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Showcase -->
+<section id="showcase" class="py-24 relative">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="text-center mb-16 reveal">
+      <div class="inline-flex items-center gap-2 rounded-full border border-ochre-200/60 bg-ochre-50/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em] text-ochre-600 dark:border-ochre-400/20 dark:bg-ochre-400/10 dark:text-ochre-200 mb-4">
+        Showcase · 界面预览
+      </div>
+      <h2 class="font-serif text-4xl font-bold text-ink-900 dark:text-paper-50">墨水在纸上流淌</h2>
+    </div>
+    <div class="reveal relative">
+      <div class="absolute -inset-4 rounded-[32px] bg-gradient-to-br from-ochre-400/15 via-transparent to-sea-500/10 blur-2xl"></div>
+      <div class="relative rounded-3xl border border-paper-200 bg-white/60 p-6 shadow-ink-2 dark:border-white/10 dark:bg-white/[0.04]">
+        <div class="grid grid-cols-12 gap-4">
+          <!-- Sidebar mock -->
+          <div class="col-span-12 sm:col-span-3 rounded-2xl bg-ink-900 p-4 text-paper-50 dark:bg-gradient-to-br dark:from-ink-900 dark:to-ink-950">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-ochre-400 text-ink-900">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+              </div>
+              <div><div class="font-serif text-sm font-semibold leading-tight">墨卡</div><div class="font-mono text-[8px] text-ochre-200/80">Mémorand</div></div>
+            </div>
+            <div class="grid grid-cols-2 gap-1.5 mb-4">
+              <div class="rounded-lg border border-white/10 bg-white/[0.04] p-1.5"><div class="text-[8px] text-ochre-200/80">Cards</div><div class="font-serif text-lg font-semibold leading-none">8</div></div>
+              <div class="rounded-lg border border-white/10 bg-white/[0.04] p-1.5"><div class="text-[8px] text-ochre-200/80">Tagged</div><div class="font-serif text-lg font-semibold leading-none">6</div></div>
+            </div>
+            <button class="w-full rounded-xl bg-gradient-to-b from-ochre-400 to-ochre-500 px-3 py-2 text-[11px] font-medium text-ink-900 mb-4 flex items-center justify-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>新卡
+            </button>
+            <div class="font-mono text-[8px] uppercase tracking-wider text-slatewash-400 mb-1.5 px-1">卡片库</div>
+            <div class="space-y-0.5 text-[11px]">
+              <div class="flex items-center gap-1.5 rounded-lg bg-ochre-400/15 px-2 py-1.5"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg><span class="flex-1">全部卡片</span><span class="text-[9px]">8</span></div>
+              <div class="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-slatewash-400"><span class="w-1.5 h-1.5 rounded-full bg-sea-500"></span>工作</div>
+              <div class="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-slatewash-400"><span class="w-1.5 h-1.5 rounded-full bg-ochre-400"></span>生活</div>
+              <div class="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-slatewash-400"><span class="w-1.5 h-1.5 rounded-full bg-moss-500"></span>灵感</div>
+            </div>
+          </div>
+          <!-- List mock -->
+          <div class="col-span-12 sm:col-span-4 space-y-2">
+            <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03] ring-1 ring-ochre-400/25">
+              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sea-500"></span><span class="font-serif text-sm font-semibold flex-1">项目周报</span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-star-yellow"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+              <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">本周完成了星标功能开发…</div>
+              <div class="text-[10px] text-slatewash-400/70 mt-1">9/21 · 14:30</div>
+            </div>
+            <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-ochre-400"></span><span class="font-serif text-sm font-semibold flex-1">读书笔记</span><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="text-star-blue"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+              <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">《深度工作》核心观点…</div>
+              <div class="text-[10px] text-slatewash-400/70 mt-1">9/20 · 21:15</div>
+            </div>
+            <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-moss-500"></span><span class="font-serif text-sm font-semibold flex-1">周末灵感</span></div>
+              <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">做一个会呼吸的便签纸…</div>
+              <div class="text-[10px] text-slatewash-400/70 mt-1">9/19 · 10:02</div>
+            </div>
+            <div class="rounded-2xl border border-paper-200 bg-white p-3 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-sea-500"></span><span class="font-serif text-sm font-semibold flex-1">会议纪要</span></div>
+              <div class="text-[11px] text-slatewash-400 mt-1 line-clamp-1">Q4 OKR 对齐会议要点…</div>
+              <div class="text-[10px] text-slatewash-400/70 mt-1">9/18 · 16:45</div>
+            </div>
+          </div>
+          <!-- Editor mock -->
+          <div class="col-span-12 sm:col-span-5 rounded-2xl border border-paper-200 bg-white/70 p-5 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+            <div class="flex items-center gap-2 mb-3 pb-3 border-b border-dashed border-paper-200 dark:border-white/10">
+              <span class="h-1.5 w-1.5 rounded-full bg-ochre-400"></span>
+              <span class="font-mono text-[9px] uppercase tracking-wider text-slatewash-400">Card · #a3f2</span>
+              <div class="ml-auto flex gap-1">
+                <span class="w-4 h-4 rounded-full bg-star-yellow ring-2 ring-ink-900/20"></span>
+              </div>
+            </div>
+            <div class="font-serif text-xl font-bold text-ink-900 dark:text-paper-50">项目周报</div>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              <span class="tag-work rounded-lg px-2 py-0.5 text-[10px]">工作</span>
+              <span class="rounded-lg border border-dashed border-paper-300 px-2 py-0.5 text-[10px] text-slatewash-400">+ 标签</span>
+            </div>
+            <div class="mt-4 hairline"></div>
+            <div class="mt-4 text-[13px] leading-7 text-slatewash-600 dark:text-slatewash-400">
+              本周主要完成了星标功能的开发与上线，支持<span class="text-star-red font-medium">红</span>/<span class="text-star-yellow font-medium">黄</span>/<span class="text-star-blue font-medium">蓝</span>三色标记。
+              <br><br>下周计划：优化搜索体验，增加全文检索与关键词高亮。
+            </div>
+            <div class="mt-6 flex items-center justify-between border-t border-dashed border-paper-200 pt-3 dark:border-white/10">
+              <span class="font-mono text-[9px] uppercase tracking-wider text-slatewash-400">memo-v2 · local</span>
+              <span class="text-[10px] text-slatewash-400">2026-09-21 · 14:30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="py-24 relative">
+  <div class="mx-auto max-w-4xl px-6">
+    <div class="reveal rounded-3xl border border-paper-200 bg-white/60 p-10 shadow-ink-card dark:border-white/10 dark:bg-white/[0.03]">
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-2 rounded-full border border-ochre-200/60 bg-ochre-50/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em] text-ochre-600 dark:border-ochre-400/20 dark:bg-ochre-400/10 dark:text-ochre-200 mb-4">
+          About · 关于
+        </div>
+        <h2 class="font-serif text-4xl font-bold text-ink-900 dark:text-paper-50">关于墨卡</h2>
+      </div>
+      <div class="space-y-4 text-slatewash-600 dark:text-slatewash-400 leading-relaxed">
+        <p>墨卡（Mémorand）诞生于一个简单的念头：<span class="text-ink-900 dark:text-paper-50 font-medium">好的备忘录，应该像一张好纸</span>——温润、克制、不打扰。</p>
+        <p>技术栈采用 <span class="font-mono text-sm">React 18 + Vite + TailwindCSS + Zustand</span>，后端基于 Node.js Express，部署于 Ubuntu 服务器，由 PM2 守护进程。所有数据按用户隔离存储，确保私密性。</p>
+        <p>设计语言取意"墨水卡"——赭石色为主调，纸白与墨夜双主题，配合细微的噪点纹理与浮动光晕，让数字记录也能有手作的温度。</p>
+      </div>
+      <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="text-center p-4 rounded-2xl bg-paper-50 dark:bg-white/[0.03]"><div class="font-serif text-2xl font-bold text-ochre-500">React</div><div class="text-xs text-slatewash-400 mt-1">前端框架</div></div>
+        <div class="text-center p-4 rounded-2xl bg-paper-50 dark:bg-white/[0.03]"><div class="font-serif text-2xl font-bold text-ochre-500">Node</div><div class="text-xs text-slatewash-400 mt-1">后端运行时</div></div>
+        <div class="text-center p-4 rounded-2xl bg-paper-50 dark:bg-white/[0.03]"><div class="font-serif text-2xl font-bold text-ochre-500">PM2</div><div class="text-xs text-slatewash-400 mt-1">进程守护</div></div>
+        <div class="text-center p-4 rounded-2xl bg-paper-50 dark:bg-white/[0.03]"><div class="font-serif text-2xl font-bold text-ochre-500">Ubuntu</div><div class="text-xs text-slatewash-400 mt-1">服务器</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="py-24 relative">
+  <div class="mx-auto max-w-3xl px-6 text-center">
+    <div class="reveal">
+      <div class="inline-flex items-center gap-2 rounded-full border border-ochre-200/60 bg-ochre-50/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.25em] text-ochre-600 dark:border-ochre-400/20 dark:bg-ochre-400/10 dark:text-ochre-200 mb-4">
+        Contact · 联系
+      </div>
+      <h2 class="font-serif text-4xl font-bold text-ink-900 dark:text-paper-50">让墨卡陪你记录</h2>
+      <p class="mt-3 text-slatewash-600 dark:text-slatewash-400">如果你有想法、建议或合作意向，欢迎随时联系</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href="mailto:hello@moka.example" class="inline-flex items-center gap-2 rounded-2xl bg-ink-900 px-6 py-3 text-sm font-medium text-paper-50 shadow-ink-1 hover:-translate-y-0.5 transition dark:bg-ochre-500 dark:text-ink-900 dark:hover:bg-ochre-400">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+          发送邮件
+        </a>
+        <a href="#top" class="inline-flex items-center gap-2 rounded-2xl border border-paper-300 bg-white/60 px-6 py-3 text-sm font-medium text-ink-900 hover:border-ochre-400 transition dark:border-white/10 dark:bg-white/[0.04] dark:text-paper-50 dark:hover:border-ochre-400/60">
+          回到顶部
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="py-10 border-t border-paper-200/70 dark:border-white/10">
+  <div class="mx-auto max-w-6xl px-6 text-center">
+    <div class="flex items-center justify-center gap-2 mb-3">
+      <span class="ink-drop"></span>
+      <span class="font-serif font-semibold text-ink-900 dark:text-paper-50">墨卡 · Mémorand</span>
+    </div>
+    <p class="text-xs text-slatewash-400 font-mono uppercase tracking-[0.2em]">© 2026 · 用墨水与代码精心打造</p>
+  </div>
+</footer>
+
+<script>
+// 暗黑模式切换
+const darkBtn = document.getElementById('darkBtn');
+const darkIcon = document.getElementById('darkIcon');
+const saved = localStorage.getItem('moka-theme');
+if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.documentElement.classList.add('dark');
+}
+function updateDarkIcon() {
+  const isDark = document.documentElement.classList.contains('dark');
+  darkIcon.innerHTML = isDark
+    ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>'
+    : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+updateDarkIcon();
+darkBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('moka-theme', isDark ? 'dark' : 'light');
+  updateDarkIcon();
+});
+
+// 导航滚动效果
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 30) nav.classList.add('glass','shadow-ink-1');
+  else nav.classList.remove('glass','shadow-ink-1');
+});
+
+// 滚动显现
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
